@@ -1,1 +1,1 @@
-web: gunicorn nypl_wesclark.wsgi --log-file -
+web: waitress-serve --port=$PORT nypl_wesclark.wsgi:application
