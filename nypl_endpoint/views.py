@@ -5,6 +5,8 @@ import requests
 import json
 import random
 
+import os # this is Heroku specific
+
 # Create your views here.
 
 
@@ -21,9 +23,12 @@ class RandomItemView(View):
     def get(self, request):
         # returns most recent 500 captures added
         url = 'http://api.repo.nypl.org/api/v1/items/recent?per_page=500&page=1'
-        # print(request.headers.get('Authorization'))
-
-        headers = {'Authorization': request.headers.get('Authorization')}
+        
+        if request.headers.get('Authorization'):
+            headers = {'Authorization': request.headers.get('Authorization')}
+        else:
+            headers = {'Authorization': os.environ.get('Authorization', None)} # this is Heroku specific
+            
 
         # get resource type url parameter or return 400 error
         if request.GET.get('type_of_resource', ''):
